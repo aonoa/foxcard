@@ -1,0 +1,563 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Card API
+    version: 0.0.1
+paths:
+    /card/clone:
+        post:
+            tags:
+                - Card
+            description: 卡密克隆
+            operationId: Card_CloneCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CloneCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/create:
+        post:
+            tags:
+                - Card
+            description: 生成卡密
+            operationId: Card_CreateCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/del:
+        post:
+            tags:
+                - Card
+            description: 销毁卡
+            operationId: Card_DelCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DelCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DelCardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/duration:
+        post:
+            tags:
+                - Card
+            description: 时长控制
+            operationId: Card_DurationCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DurationCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/frozen:
+        post:
+            tags:
+                - Card
+            description: 冻结卡
+            operationId: Card_FrozenCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/FrozenCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/FrozenCardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/heartbeat:
+        post:
+            tags:
+                - Card
+            description: 卡密心跳
+            operationId: Card_CardHeartbeat
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/HeartbeatRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/HeartbeatReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/login:
+        post:
+            tags:
+                - Card
+            description: 卡密登陆
+            operationId: Card_CardLogin
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/logout:
+        post:
+            tags:
+                - Card
+            description: 卡密退出登陆
+            operationId: Card_CardLogout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LogoutReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /card/thaw:
+        post:
+            tags:
+                - Card
+            description: 解冻卡
+            operationId: Card_ThawCard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ThawCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ThawCardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+components:
+    schemas:
+        CardInfo:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                cardType:
+                    type: string
+                effectTimestamp:
+                    type: integer
+                    format: int64
+                effectDuration:
+                    type: integer
+                    format: int64
+                expiresTs:
+                    type: integer
+                    format: int64
+                config:
+                    type: string
+                status:
+                    type: integer
+                    format: int64
+                device:
+                    type: array
+                    items:
+                        type: string
+        CardReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                card:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/CardInfo'
+                serverTime:
+                    type: integer
+                    format: int64
+        CloneCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                appSecret:
+                    type: string
+                cardId:
+                    type: string
+                device:
+                    type: array
+                    items:
+                        type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                nonce:
+                    type: string
+                sign:
+                    type: string
+        CreateCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                appSecret:
+                    type: string
+                cardType:
+                    type: string
+                config:
+                    type: string
+                effectTimestamp:
+                    type: integer
+                    format: int64
+                effectDuration:
+                    type: integer
+                    format: int64
+                device:
+                    type: array
+                    items:
+                        type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                nonce:
+                    type: string
+                sign:
+                    type: string
+        DelCardReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        DelCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        DurationCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                appSecret:
+                    type: string
+                cardId:
+                    type: string
+                durationType:
+                    type: integer
+                    format: enum
+                Duration:
+                    type: integer
+                    format: int64
+                timestamp:
+                    type: integer
+                    format: int64
+                nonce:
+                    type: string
+                sign:
+                    type: string
+        FrozenCardReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        FrozenCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                FrozenType:
+                    type: integer
+                    format: enum
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        HeartbeatReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                token:
+                    type: string
+                expiresTs:
+                    type: integer
+                    format: int64
+                serverTime:
+                    type: integer
+                    format: int64
+        HeartbeatRequest:
+            type: object
+            properties:
+                device:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        LoginReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                cardType:
+                    type: string
+                token:
+                    type: string
+                expiresTs:
+                    type: integer
+                    format: int64
+                config:
+                    type: string
+                serverTime:
+                    type: integer
+                    format: int64
+        LoginRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                device:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        LogoutReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+        LogoutRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                device:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        ThawCardReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int64
+                message:
+                    type: string
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+        ThawCardRequest:
+            type: object
+            properties:
+                appKey:
+                    type: string
+                cardId:
+                    type: string
+                nonce:
+                    type: string
+                timestamp:
+                    type: integer
+                    format: int64
+                sign:
+                    type: string
+tags:
+    - name: Card

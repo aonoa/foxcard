@@ -1,0 +1,275 @@
+syntax = "proto3";
+
+package api.card.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "foxcard/api/card/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.card.v1";
+
+service Card {
+	// 卡密登陆
+	rpc CardLogin (LoginRequest) returns (LoginReply) {
+		option (google.api.http) = {
+			post: "/card/login",
+			body: "*"
+		};
+	}
+	// 卡密心跳
+	rpc CardHeartbeat (HeartbeatRequest) returns (HeartbeatReply) {
+		option (google.api.http) = {
+			post: "/card/heartbeat",
+			body: "*"
+		};
+	}
+	// 卡密退出登陆
+	rpc CardLogout (LogoutRequest) returns (LogoutReply) {
+		option (google.api.http) = {
+			post: "/card/logout",
+			body: "*"
+		};
+	}
+
+
+	// 生成卡密
+	rpc CreateCard (CreateCardRequest) returns (CardReply) {
+		option (google.api.http) = {
+			post: "/card/create",
+			body: "*"
+		};
+	}
+	// 冻结卡
+	rpc FrozenCard (FrozenCardRequest) returns (FrozenCardReply) {
+		option (google.api.http) = {
+			post: "/card/frozen",
+			body: "*"
+		};
+	}
+	// 解冻卡
+	rpc ThawCard (ThawCardRequest) returns (ThawCardReply) {
+		option (google.api.http) = {
+			post: "/card/thaw",
+			body: "*"
+		};
+	}
+	// 销毁卡
+	rpc DelCard	(DelCardRequest) returns (DelCardReply) {
+		option (google.api.http) = {
+			post: "/card/del",
+			body: "*"
+		};
+	}
+	// 卡密克隆
+	rpc CloneCard	(CloneCardRequest) returns (CardReply) {
+		option (google.api.http) = {
+			post: "/card/clone",
+			body: "*"
+		};
+	}
+	// 卡密克隆并销毁
+
+	// 时长控制
+	rpc DurationCard	(DurationCardRequest) returns (CardReply) {
+		option (google.api.http) = {
+			post: "/card/duration",
+			body: "*"
+		};
+	}
+	// *单码多设备控制
+}
+
+message LoginRequest {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;		// 登录的卡密
+	string device = 3;		// 用户的唯一设备标识
+
+	string nonce = 4;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 5;	// 时间戳，秒级（10位数）
+	string sign = 6;			// 签名
+}
+
+message LoginReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	string card_type = 3;	// 卡密类型
+	string token = 4;			// 本次登录的标识，鉴权用的令牌
+	int64 expires_ts = 5;	// 过期时间戳，秒级（10位数）
+	string config = 6;		// 卡密的配置
+
+	int64	server_time = 7;	// 服务器当前时间戳，秒级（10位数）
+}
+
+message LogoutRequest {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;		// 登录的卡密
+	string device = 3;		// 用户的唯一设备标识
+
+	string nonce = 4;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 5;	// 时间戳，秒级（10位数）
+	string sign = 6;			// 签名
+}
+
+message LogoutReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+}
+
+
+
+message CardInfo {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;			// 卡密
+	string card_type = 3;	// 卡密类型
+
+	int64 effect_timestamp = 4;	// 生效时间
+	int64 effect_duration = 5;	// 生效时长
+	int64 expires_ts = 6;	// 过期时间戳，秒级（10位数）
+	string config = 7;		// 卡密的配置
+
+	int64 status = 9;			// 状态
+
+	repeated string device = 8;		// 设备相关信息
+}
+
+message CreateCardRequest {
+	string app_key = 1;			// 软件的app_key
+	string app_secret = 2;	// 软件秘钥，在开发端后台软件列表获取
+
+	string card_type = 3;	// 卡密类型
+	string config = 4;		// 卡密配置
+
+	int64 effect_timestamp = 5;	// 生效时间
+	int64 effect_duration = 6;	// 生效时长
+
+	repeated string device = 7;		// 设备相关信息
+
+	int64 timestamp = 8;	// 时间戳
+	string nonce = 9;			// 随机字符串
+	string sign = 10;			// 签名
+}
+
+
+message CardReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	repeated CardInfo card = 3;	// 创建成功的卡密列表
+
+	int64	server_time = 4;	// 服务器当前时间戳，秒级（10位数）
+}
+
+message HeartbeatRequest {
+	string device = 3;		// 用户的唯一设备标识
+
+	string nonce = 4;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 5;	// 时间戳，秒级（10位数）
+	string sign = 6;			// 签名
+}
+
+message HeartbeatReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	string token = 4;			// 下次心跳鉴权用的令牌
+	int64 expires_ts = 5;	// 过期时间戳，秒级（10位数）
+
+	int64	server_time = 7;	// 服务器当前时间戳，秒级（10位数）
+}
+
+enum FrozenType {
+	BAN = 0;	// 禁止验证行为
+	HALT = 1;	// 禁止验证，冻结时间（冻结期间的时长会推迟过期时间）
+}
+
+message FrozenCardRequest {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;		// 卡密
+	FrozenType Frozen_type = 3; // 冻结类型
+	string nonce = 4;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 5;	// 时间戳，秒级（10位数）
+	string sign = 6;			// 签名
+}
+
+message FrozenCardReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	string app_key = 3;		// 软件的app_key
+	string cardId = 4;		// 卡密
+	string nonce = 5;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 6;	// 时间戳，秒级（10位数）
+	string sign = 7;			// 签名
+}
+
+message ThawCardRequest {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;		// 卡密
+
+	string nonce = 3;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 4;	// 时间戳，秒级（10位数）
+	string sign = 5;			// 签名
+}
+
+message ThawCardReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	string app_key = 3;		// 软件的app_key
+	string cardId = 4;		// 卡密
+	string nonce = 5;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 6;	// 时间戳，秒级（10位数）
+	string sign = 7;			// 签名
+}
+
+message DelCardRequest {
+	string app_key = 1;		// 软件的app_key
+	string cardId = 2;		// 卡密
+
+	string nonce = 3;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 4;	// 时间戳，秒级（10位数）
+	string sign = 5;			// 签名
+}
+
+message DelCardReply {
+	int64 code = 1;				// 返回码，0表示正确，详细参照返回码对照表
+	string message = 2;		// 请求出错时的错误信息
+
+	string app_key = 3;		// 软件的app_key
+	string cardId = 4;		// 卡密
+	string nonce = 5;			// 不超过36位的随机字符串（建议用UUID）
+	int64 timestamp = 6;	// 时间戳，秒级（10位数）
+	string sign = 7;			// 签名
+}
+
+message CloneCardRequest {
+	string app_key = 1;			// 软件的app_key
+	string app_secret = 2;	// 软件秘钥，在开发端后台软件列表获取
+
+	string cardId = 3;	// 卡密ID
+
+	repeated string device = 4;		// 设备相关信息
+
+	int64 timestamp = 5;	// 时间戳
+	string nonce = 6;			// 随机字符串
+	string sign = 7;			// 签名
+}
+
+enum DurationType {
+	ADD = 0;	// 添加有效时长（秒,小于10年)
+	EXPIRES = 1;	// 过期时间（时间戳(s)）
+}
+
+message DurationCardRequest {
+	string app_key = 1;			// 软件的app_key
+	string app_secret = 2;	// 软件秘钥，在开发端后台软件列表获取
+
+	string cardId = 3;	// 卡密ID
+	DurationType duration_type = 4; // 添加时长类型
+	int64 Duration = 5;
+
+	int64 timestamp = 6;	// 时间戳
+	string nonce = 7;			// 随机字符串
+	string sign = 8;			// 签名
+}
